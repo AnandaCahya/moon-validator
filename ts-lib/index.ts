@@ -19,15 +19,21 @@ export class Validator {
     public isString(options: StringOption): Validator {
         if (typeof this.value !== "string") this.errors.push("Value must be string")
         if (typeof options?.maxLength !== "undefined" && this.value.length > options.maxLength) this.errors.push(`Max length is ${options.maxLength}`)
-        if (typeof options?.minLength !== "undefined" && this.value.length < options.minLength) this.errors.push(`Max length is ${options.minLength}`)
+        if (typeof options?.minLength !== "undefined" && this.value.length < options.minLength) this.errors.push(`Min length is ${options.minLength}`)
         return this
     }
     public isNumber(options: NumberOption): Validator {
-        if (typeof this.value !== "number") this.errors.push("Value must be number")
+        if (typeof this.value !== "number" && isNaN(this.value)) this.errors.push("Value must be number")
         if (typeof options?.max !== "undefined" && this.value > options.max) this.errors.push(`Max range is ${options.max}`)
         if (typeof options?.min !== "undefined" && this.value < options.min) this.errors.push(`Min length is ${options.min}`)
         return this
     }
+    public isDate() {
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
+        if(!(this.value instanceof) Date || this.value.match(regex)) this.errors.push("Value must be Date")
+        return this
+    }
+
     public toNumber(): Validator {
         this.value = parseInt(this.value)
         return this
