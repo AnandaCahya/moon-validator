@@ -30,8 +30,12 @@ export class Validator {
     }
     public isDate() {
         const regex = /^\d{4}-\d{2}-\d{2}$/;
-        if(!(this.value instanceof) Date || this.value.match(regex)) this.errors.push("Value must be Date")
+        if(!(this.value instanceof Date || this.value.match(regex))) this.errors.push("Value must be Date")
         return this
+    }
+
+    public isBoolean() {
+        if(typeof this.value !== "boolean") this.errors.push("Value must be boolean")
     }
 
     public toNumber(): Validator {
